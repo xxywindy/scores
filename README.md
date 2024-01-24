@@ -1,6 +1,6 @@
 # 浙江大学绩点速速更新
 
-[点击此处下载](https://github.com/STDquantum/ZJU-Scores/releases/download/v0.0.1/main.exe)
+[点击此处下载](https://github.com/STDquantum/ZJU-Scores/releases/download/v0.0.2/ZJU-GPA-Seeker.exe)
 
 下载后双击运行，输入学号密码和钉钉机器人webhook（使用方法见下），点登录。
 
