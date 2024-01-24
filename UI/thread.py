@@ -102,6 +102,7 @@ class WorkThread(QThread):
         userscore = {item[0]: item[1:] for item in userscore}
 
         #对比以更新
+        strr = ""
         for lesson in new_score:
             id = lesson['xkkh']
             isMajor = 'N'
@@ -142,8 +143,8 @@ class WorkThread(QThread):
             
             print(f'考试成绩通知\n选课课号\t{id}\n课程名称\t{name}\n成绩\t{score}\n学分\t{credit}\n绩点\t{gp}')
             print()
-            return True, f'\n选课课号\t{id}\n课程名称\t{name}\n成绩\t{score}\n学分\t{credit}\n绩点\t{gp}'
-        return False, 0
+            strr += f'\n选课课号\t{id}\n课程名称\t{name}\n成绩\t{score}\n学分\t{credit}\n绩点\t{gp}\n\n'
+        return strr != "", strr
 
     def scorenotification(self, xuenian=None):
         try:
