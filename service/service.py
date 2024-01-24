@@ -1,4 +1,4 @@
-import pymysql
+import sqlite3
 
 # 填写你的数据库用户名和密码
 USERNAME = 'username'
@@ -7,7 +7,7 @@ LIMIT = 4
 DB = 'scores'
 
 def openuser(username,password):
-    db = pymysql.connect(host='localhost', user=username, passwd=password, port=3306, db=DB)
+    db = sqlite3.connect(host='localhost', user=username, passwd=password, port=3306, db=DB)
     return db
 
 class User():
@@ -50,7 +50,7 @@ class User():
         cusor = db.cursor()
         try:
             cusor.execute(sql, values)
-        except pymysql.Error as e:
+        except sqlite3.Error as e:
             print('error')
             print(e)
             db.rollback()
