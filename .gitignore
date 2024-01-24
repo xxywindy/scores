@@ -1,5 +1,3 @@
 database.json
-*.pyc
-__pycache__
 counter.txt
 scores.db
