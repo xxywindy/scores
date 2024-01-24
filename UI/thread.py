@@ -142,6 +142,8 @@ class WorkThread(QThread):
             
             print(f'考试成绩通知\n选课课号\t{id}\n课程名称\t{name}\n成绩\t{score}\n学分\t{credit}\n绩点\t{gp}')
             print()
+            return True, f'\n选课课号\t{id}\n课程名称\t{name}\n成绩\t{score}\n学分\t{credit}\n绩点\t{gp}'
+        return False, 0
 
     def scorenotification(self, xuenian=None):
         try:
@@ -155,9 +157,12 @@ class WorkThread(QThread):
                 sign = time.strftime("%m-%d %H:%M:%S", time.localtime()) + f" 第 {times} 次运行, "
                 print(time.strftime("%m-%d %H:%M:%S", time.localtime()), f"第 {times} 次运行", end='，')
                 try:
-                    self.updatescore(xuenian)
-                    sign += "没有新绩点"
-                    print("没有新绩点")
+                    IsTrue, tem = self.updatescore(xuenian)
+                    if IsTrue:
+                        sign += tem
+                    else:
+                        sign += "没有新绩点"
+                        print("没有新绩点")
                 except Exception as e:
                     sign += str(e)
                     print(str(e))
