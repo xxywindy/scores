@@ -5,6 +5,7 @@ from PyQt5.QtGui import QIcon, QPalette
 from UI.QueryTable import *
 from service.service import *
 from UI.thread import WorkThread
+from images.resources import *
 
 class zjuerQuery(QMainWindow):
     def __init__(self,user):

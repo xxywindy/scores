@@ -3,9 +3,10 @@ from PyQt5.QtWidgets import QMainWindow, QWidget, QListView, QVBoxLayout, QFrame
 from qfluentwidgets import LineEdit, PushButton, PasswordLineEdit
 from PyQt5.QtGui import QIcon, QPalette
 from PyQt5.QtCore import QRect
-import json
 from UI.query import *
 from service.service import *
+from images.resources import *
+import json
 
 class zjuerLogin(QMainWindow):
     def __init__(self):
