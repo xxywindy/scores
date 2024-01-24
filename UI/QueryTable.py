@@ -23,13 +23,17 @@ class MyQueryTable(QWidget):
         self.YearComboBox.addItem("")
         self.YearComboBox.setItemText(0,"全部")
         self.YearComboBox.addItem("")
-        self.YearComboBox.setItemText(1,"2022-2023")
+        self.YearComboBox.setItemText(1,"2020-2021")
         self.YearComboBox.addItem("")
-        self.YearComboBox.setItemText(2,"2023-2024")
+        self.YearComboBox.setItemText(2,"2021-2022")
         self.YearComboBox.addItem("")
-        self.YearComboBox.setItemText(3,"2024-2025")
+        self.YearComboBox.setItemText(3,"2022-2023")
         self.YearComboBox.addItem("")
-        self.YearComboBox.setItemText(4,"2025-2026")
+        self.YearComboBox.setItemText(4,"2023-2024")
+        self.YearComboBox.addItem("")
+        self.YearComboBox.setItemText(5,"2024-2025")
+        self.YearComboBox.addItem("")
+        self.YearComboBox.setItemText(6,"2025-2026")
         self.SemesterComboBox = ComboBox()
         self.SemesterComboBox.addItem("")
         self.SemesterComboBox.setItemText(0,"全部")
@@ -130,16 +134,20 @@ class MyQueryTable(QWidget):
                 x = x + 1
     
     # 年份选择事件
-    def year(self,year):
+    def year(self, year):
         if year == 0:
             self.user.year = ''
         elif year == 1:
-            self.user.year = "AND year = '2022-2023'"
+            self.user.year = "AND year = '2020-2021'"
         elif year == 2:
-            self.user.year = "AND year = '2023-2024'"
+            self.user.year = "AND year = '2021-2022'"
         elif year == 3:
-            self.user.year = "AND year = '2024-2025'"
+            self.user.year = "AND year = '2022-2023'"
         elif year == 4:
+            self.user.year = "AND year = '2023-2024'"
+        elif year == 5:
+            self.user.year = "AND year = '2024-2025'"
+        elif year == 6:
             self.user.year = "AND year = '2025-2026'"
     
     # 学期选择事件

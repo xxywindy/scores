@@ -73,19 +73,22 @@ class zjuerQuery(QMainWindow):
         self.AnalyseButton.clicked.connect(self.resanalyse)
 
     def resanalyse(self):
-        yearallres = self.user.YearAllQuery()[0]
-        yearmajorres = self.user.YearMajorQuery()[0]
-        semesterallres = self.user.SemesterAllQuery()[0]
-        semestermajorres = self.user.SemesterMajorQuery()[0]
-        data = semesterallres+semestermajorres+yearallres+yearmajorres
-        year = self.user.year[12:-1]
-        semester = self.user.semester[16:-1]
-        with open('./html/res.html','r',encoding='utf-8') as file:
-            html_str = file.read()
-        for i in range(16):
-            html_str = html_str.replace(f"data[{i}]",str(data[i]))
-        html_str = html_str.replace('year',year if year != '' else '所有课程')
-        html_str = html_str.replace('semester',semester if semester != '' else '所有课程')
+        try:
+            yearallres = self.user.YearAllQuery()[0]
+            yearmajorres = self.user.YearMajorQuery()[0]
+            semesterallres = self.user.SemesterAllQuery()[0]
+            semestermajorres = self.user.SemesterMajorQuery()[0]
+            data = semesterallres + semestermajorres + yearallres + yearmajorres
+            year = self.user.year[12:-1]
+            semester = self.user.semester[16:-1]
+            with open('./html/res.html','r',encoding='utf-8') as file:
+                html_str = file.read()
+            for i in range(16):
+                html_str = html_str.replace(f"data[{i}]", f"{data[i] : .2f}")
+            html_str = html_str.replace('year', year if year != '' else '所有课程')
+            html_str = html_str.replace('semester', semester if semester != '' else '所有课程')
+        except:
+            html_str = '<div style="font-size:15pt; color:red;">该对应学期或学年无课程数据</div>'
         self.AnalyseRes.setHtml(html_str)
 
     # 爬虫子线程函数
