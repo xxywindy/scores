@@ -74,7 +74,7 @@ class WorkThread(QThread):
             'User-Agent': 'Mozilla/5.0 (Linux; Android 10; Redmi K30 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Mobile Safari/537.36',
         }
 
-        res = session.post(url=f'http://zdbk.zju.edu.cn/jwglxt/cxdy/xscjcx_cxXscjIndex.html?doType=query&gnmkdm={gnmkdm}&su={username}', data={
+        res = session.post(url=f'http://zdbk.zju.edu.cn/jwglxt/cxdy/xscjcx_cxXscjIndex.html?doType=query&gnmkdm=N5803&su={username}', data={
             'xn': xuenian,
             'xq': None,
             'zscjl': None,
@@ -88,15 +88,34 @@ class WorkThread(QThread):
             'time': 0,
         }, headers=headers)
 
+        res1 = session.post(url=f'http://zdbk.zju.edu.cn/jwglxt/zycjtj/xszgkc_cxXsZgkcIndex.html?doType=query&gnmkdm=N908550&su={username}', data={
+            'kcmc': None,
+            '_search': 'false',
+            'nd': str(int(time.time() * 1000)),
+            'queryModel.showCount': 5000,
+            'queryModel.currentPage': 1,
+            'queryModel.sortName': 'xkkh, kcdm',
+            'queryModel.sortOrder': 'asc',
+            'time': 0,
+        }, headers=headers)
+        open("1.json", "w", encoding="utf-8").write(res1.text)
+
         new_score = res.json()['items']
+        major_score = json.loads(res1.text.encode('utf-8'))["items"]
+        print(major_score)
+        major_score = [item['xkkh'] for item in major_score]
+        print(major_score)
         
         user = User()
         userscore = user.CrawlerQuery()
-        userscore = { item[0]: item[1:] for item in userscore}
+        userscore = {item[0]: item[1:] for item in userscore}
 
         #对比以更新
         for lesson in new_score:
             id = lesson['xkkh']
+            isMajor = 'N'
+            if id in major_score:
+                isMajor = 'Y'
             name = lesson['kcmc']
             score = lesson['cj']
             credit = lesson['xf']
@@ -115,7 +134,7 @@ class WorkThread(QThread):
                 continue
             
             # 写入数据库
-            if user.AddScore(id,year,semester,name,credit,score,gp):
+            if user.AddScore(id, year, semester, name, credit, score, gp, major=isMajor):
                 print('导入发生错误')
 
             #钉钉推送消息
@@ -124,18 +143,13 @@ class WorkThread(QThread):
                     "msgtype": "markdown",
                     "markdown" : {
                         "title": "考试成绩通知",
-                        "text": """### 考试成绩通知\n
-- **选课课号**\t%s\n
-- **课程名称**\t%s\n
-- **成绩**\t%s\n
-- **学分**\t%s\n
-- **绩点**\t%s """ % (id, name, score, credit, gp)
+                        "text": f"""### 考试成绩通知\n\n- **选课课号**\t{id}\n\n- **课程名称**\t{name}\n\n- **成绩**\t{score}\n\n- **学分**\t{credit}\n\n- **绩点**\t{gp}"""
                     }
                 })
             except requests.exceptions.MissingSchema:
-                print('The DingTalk Webhook URL is invalid. Please use -d [DingWebhook] to reset it first.')
+                print('无效 DingTalkWebHook')
             
-            print('考试成绩通知\n选课课号\t%s\n课程名称\t%s\n成绩\t%s\n学分\t%s\n绩点\t%s' % (id, name, score, credit, gp))
+            print(f'考试成绩通知\n选课课号\t{id}\n课程名称\t{name}\n成绩\t{score}\n学分\t{credit}\n绩点\t{gp}')
             print()
 
     def scorenotification(self, xuenian=None):
@@ -147,7 +161,7 @@ class WorkThread(QThread):
         while True:
             if self.IsCrawl:
                 times += 1 
-                sign = str(time.strftime("%m-%d %H:%M:%S", time.localtime())) + f" 第 {times} 次运行, "
+                sign = time.strftime("%m-%d %H:%M:%S", time.localtime()) + f" 第 {times} 次运行, "
                 print(time.strftime("%m-%d %H:%M:%S", time.localtime()), f"第 {times} 次运行", end='，')
                 try:
                     self.updatescore(xuenian)
