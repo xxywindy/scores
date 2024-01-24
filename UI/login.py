@@ -24,7 +24,7 @@ class zjuerLogin(QMainWindow):
 
         self.listView = QListView(self.centerwidget)
         self.listView.setGeometry(QtCore.QRect(-5, 1, 1281, 771))
-        self.listView.setStyleSheet("border-image: url(./images/background.png);")
+        self.listView.setStyleSheet("border-image: url(https://cdn.luogu.com.cn/upload/image_hosting/4mi5g0ad.png);")
         self.listView.setObjectName("listView")
 
         self.frame = QFrame(self.centerwidget)
