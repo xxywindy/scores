@@ -1,52 +1,61 @@
 import sqlite3
 
 # 填写你的数据库用户名和密码
-USERNAME = 'username'
-PASSWORD = 'password'
 LIMIT = 4
-DB = 'scores'
-
-def openuser(username,password):
-    db = sqlite3.connect(host='localhost', user=username, passwd=password, port=3306, db=DB)
-    return db
+DB = 'scores.db'
 
 class User():
-    def __init__(self,username = USERNAME, password = PASSWORD):
-        self.username = username
-        self.password = password
+    def __init__(self):
         # 条件查询拼接sql语句
         self.major = ''
         self.year = ''
         self.semester = ''
-    
-    def Login(self):
-        return (self.username, self.password)
+        db = sqlite3.connect(DB)
+        cursor = db.cursor()
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='score'")
+
+        # 如果表不存在，那么创建它
+        if cursor.fetchone() is None:
+            cursor.execute("""
+                CREATE Table score(
+                    id TEXT PRIMARY KEY,          -- '选课课号'
+                    year TEXT,                    -- '学年'
+                    Semester TEXT,                -- '学期'
+                    name TEXT,                    -- '课程名称'
+                    credits REAL,                 -- '学分'
+                    grade INTEGER,                -- '成绩'
+                    gp REAL,                      -- '绩点'
+                    regrade INTEGER,              -- '补考成绩'
+                    major TEXT DEFAULT 'N'        -- '是否主修'
+                );""")
+
+        # 提交事务
+        db.commit()
+        db.close()
     
     # 查询表单总数
     def CountQuery(self):
-        db = openuser(*(self.Login()))
+        db = sqlite3.connect(DB)
         cursor = db.cursor()
         # table是sql语句
-        sql = sql = f'SELECT COUNT(*) FROM score WHERE 1 = 1 {self.year} {self.semester} {self.major}'
+        sql = f'SELECT COUNT(*) FROM score WHERE 1 = 1 {self.year} {self.semester} {self.major}'
         cursor.execute(sql)
         result = cursor.fetchall()
-        cursor.close()
         db.close()
         return result
 
     # 成绩信息查阅
     def Query(self,sql,*keys):
-        db = openuser(*(self.Login()))
+        db = sqlite3.connect(DB)
         cursor = db.cursor()
         cursor.execute(sql, keys)
         result = cursor.fetchall()
-        cursor.close()
         db.close()
         return result
 
     # 增删改操纵(只能增)
     def Exec(self, sql,*values):
-        db = openuser(*(self.Login()))
+        db = sqlite3.connect(DB)
         cusor = db.cursor()
         try:
             cusor.execute(sql, values)
@@ -57,7 +66,6 @@ class User():
             return True
         finally:
             db.commit()
-        cusor.close()
         db.close()
 
     # 查询成绩
@@ -68,7 +76,7 @@ class User():
     
     # 增加成绩信息
     def AddScore(self,id,year,semester,name,credits,grade,gp,regrade=None,major='N'):
-        sql = 'INSERT INTO score VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)'
+        sql = 'INSERT INTO score VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
         return self.Exec(sql,id,year,semester,name,credits,grade,gp,regrade,major)
     
     # 爬虫查询

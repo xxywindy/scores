@@ -124,13 +124,12 @@ class WorkThread(QThread):
                     "msgtype": "markdown",
                     "markdown" : {
                         "title": "考试成绩通知",
-                        "text": """
-    ### 考试成绩通知\n
-    - **选课课号**\t%s\n
-    - **课程名称**\t%s\n
-    - **成绩**\t%s\n
-    - **学分**\t%s\n
-    - **绩点**\t%s """ % (id, name, score, credit, gp)
+                        "text": """### 考试成绩通知\n
+- **选课课号**\t%s\n
+- **课程名称**\t%s\n
+- **成绩**\t%s\n
+- **学分**\t%s\n
+- **绩点**\t%s """ % (id, name, score, credit, gp)
                     }
                 })
             except requests.exceptions.MissingSchema:
