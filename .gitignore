@@ -3,3 +3,8 @@ counter.txt
 scores.db
 *.pyc
 __pycache__
+test*
+.venv
+build
+dist
+*.spec

@@ -63,18 +63,12 @@ class WorkThread(QThread):
         }
         # 登录
         res = session.post('https://zjuam.zju.edu.cn/cas/login?service=http://zdbk.zju.edu.cn/jwglxt/xtgl/login_ssologin.html', data)
-        data["doType"] = "zjsy"
-        res = session.post('http://zdbk.zju.edu.cn/jwglxt/xtgl/index_cxLeafGnmkdm.html?gnmkdm=index&su=3220100059', data)
-        gnmkdm = ""
-        for project in res.json()["result"]:
-            if project["gnmkmc"] == "成绩查询":
-                gnmkdm = project["gnmkdm"]
 
         headers = {
             'User-Agent': 'Mozilla/5.0 (Linux; Android 10; Redmi K30 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Mobile Safari/537.36',
         }
 
-        res = session.post(url=f'http://zdbk.zju.edu.cn/jwglxt/cxdy/xscjcx_cxXscjIndex.html?doType=query&gnmkdm=N5803&su={username}', data={
+        res = session.post(url=f'http://zdbk.zju.edu.cn/jwglxt/cxdy/xscjcx_cxXscjIndex.html?doType=query&gnmkdm=N5083&su={username}', data={
             'xn': xuenian,
             'xq': None,
             'zscjl': None,
@@ -98,13 +92,10 @@ class WorkThread(QThread):
             'queryModel.sortOrder': 'asc',
             'time': 0,
         }, headers=headers)
-        open("1.json", "w", encoding="utf-8").write(res1.text)
 
         new_score = res.json()['items']
-        major_score = json.loads(res1.text.encode('utf-8'))["items"]
-        print(major_score)
-        major_score = [item['xkkh'] for item in major_score]
-        print(major_score)
+        major_score = res1.json()["items"]
+        major_score = [(item['xkkh'] if item["xdbjmc"] == "已修" else "") for item in major_score]
         
         user = User()
         userscore = user.CrawlerQuery()

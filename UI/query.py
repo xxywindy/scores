@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QWidget, QListView, QHBoxLayout, QVBoxLayout, QPushButton, QTextBrowser, QFrame
+from PyQt5.QtWidgets import QMainWindow, QWidget, QListView, QHBoxLayout, QVBoxLayout, QTextBrowser, QFrame
+from qfluentwidgets import PushButton
 from PyQt5.QtGui import QIcon, QPalette
 from UI.QueryTable import *
 from service.service import *
@@ -16,15 +17,13 @@ class zjuerQuery(QMainWindow):
     def _init_Ui(self):
         self.setWindowTitle('zjuer自动成绩查询')
         self.centerwidget = QWidget(self)
-        # self.setWindowIcon(QIcon(''))                 # 图标地址
         palette = QPalette()
-        # palette.setBrush(QPalette.Background, QBrush(QPixmap()))              # 图标地址
         self.setPalette(palette)
         self.setCentralWidget(self.centerwidget)
 
         self.listView = QListView(self.centerwidget)
         self.listView.setGeometry(QtCore.QRect(-5, 1, 1281, 771))
-        self.listView.setStyleSheet("border-image: url(./images/background.png); opacity:0.6;")
+        self.listView.setStyleSheet("border-image: url(https://cdn.luogu.com.cn/upload/image_hosting/4mi5g0ad.png); opacity:0.6;")
         self.listView.setObjectName("listView")
 
         # 分析区和结果区建立垂直布局放在左边,爬虫工作区放右边
@@ -38,10 +37,8 @@ class zjuerQuery(QMainWindow):
         # 结果分析区
         self.VAnalyseZone = QVBoxLayout()
         self.ButtonLayout = QHBoxLayout()
-        self.AnalyseButton = QPushButton()
+        self.AnalyseButton = PushButton()
         self.AnalyseButton.setText('结果分析')
-        self.AnalyseButton.setStyleSheet("QPushButton{background:#989898;border-radius:5px;}QPushButton:hover{background:#616060;}\
-                                    QPushButton{font-family:'Arial';color:#FFFFFF;}")
         self.ButtonLayout.addWidget(self.AnalyseButton)
         self.ButtonLayout.addStretch()
         self.AnalyseRes = QTextBrowser()
@@ -59,15 +56,11 @@ class zjuerQuery(QMainWindow):
         # 爬虫工作区
         self.VCrawlerLayout = QVBoxLayout()
         self.HButtonLayout = QHBoxLayout()
-        self.WorkButton = QPushButton()
+        self.WorkButton = PushButton()
         self.WorkButton.setText('开始爬取')
-        self.WorkButton.setStyleSheet("QPushButton{background:#989898;border-radius:5px;}QPushButton:hover{background:#616060;}\
-                                    QPushButton{font-family:'Arial';color:#FFFFFF;}")
         self.HButtonLayout.addWidget(self.WorkButton)
-        self.FinishButton = QPushButton()
+        self.FinishButton = PushButton()
         self.FinishButton.setText('停止爬取')
-        self.FinishButton.setStyleSheet("QPushButton{background:#989898;border-radius:5px;}QPushButton:hover{background:#616060;}\
-                                    QPushButton{font-family:'Arial';color:#FFFFFF;}")
         self.HButtonLayout.addWidget(self.FinishButton)
         self.WorkText = QTextBrowser()
         self.VCrawlerLayout.addLayout(self.HButtonLayout)
@@ -80,19 +73,21 @@ class zjuerQuery(QMainWindow):
         self.AnalyseButton.clicked.connect(self.resanalyse)
 
     def resanalyse(self):
-        yearallres = self.user.YearAllQuery()[0]
-        yearmajorres = self.user.YearMajorQuery()[0]
-        semesterallres = self.user.SemesterAllQuery()[0]
-        semestermajorres = self.user.SemesterMajorQuery()[0]
-        data = semesterallres+semestermajorres+yearallres+yearmajorres
-        year = self.user.year[12:-1]
-        semester = self.user.semester[16:-1]
-        with open('./html/res.html','r',encoding='utf-8') as file:
-            html_str = file.read()
-        for i in range(16):
-            html_str = html_str.replace(f"data[{i}]",str(data[i]))
-        html_str = html_str.replace('year',year if year != '' else '所有课程')
-        html_str = html_str.replace('semester',semester if semester != '' else '所有课程')
+        try:
+            yearallres = self.user.YearAllQuery()[0]
+            yearmajorres = self.user.YearMajorQuery()[0]
+            semesterallres = self.user.SemesterAllQuery()[0]
+            semestermajorres = self.user.SemesterMajorQuery()[0]
+            data = semesterallres + semestermajorres + yearallres + yearmajorres
+            year = self.user.year[12:-1]
+            semester = self.user.semester[16:-1]
+            html_str = '<!DOCTYPE HTML><html><head><meta name="qrichtext" content="1"><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:15pt; font-weight:600; color:#000000;">当前学期(semester)：</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:10pt; font-weight:600; color:#000000;">总学分:</span><span>data[0]，</span><span style=" font-size:10pt; font-weight:600; color:#000000;">总绩点：</span><span>data[1]</span><br /><span style=" font-size:10pt; font-weight:600; color:#000000;">平均绩点:</span><span>data[2]，</span><span style=" font-size:10pt; font-weight:600; color:#000000;">百分制平均分:</span><span>data[3]</span><br /></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:10pt; font-weight:600; color:#000000;">主修总学分:</span><span>data[4]，</span><span style=" font-size:10pt; font-weight:600; color:#000000;">主修总绩点：</span><span>data[5]</span><br /><span style=" font-size:10pt; font-weight:600; color:#000000;">主修平均绩点:</span><span>data[6]，</span><span style=" font-size:10pt; font-weight:600; color:#000000;">主修百分制平均分:</span><span>data[7]</span><br /></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:15pt; font-weight:600; color:#000000;">当前学年(year)：</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:10pt; font-weight:600; color:#000000;">总学分:</span><span>data[8]，</span><span style=" font-size:10pt; font-weight:600; color:#000000;">总绩点：</span><span>data[9]</span><br /><span style=" font-size:10pt; font-weight:600; color:#000000;">平均绩点:</span><span>data[10]，</span><span style=" font-size:10pt; font-weight:600; color:#000000;">百分制平均分:</span><span>data[11]</span><br /></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:10pt; font-weight:600; color:#000000;">主修总学分:</span><span>data[12]，</span><span style=" font-size:10pt; font-weight:600; color:#000000;">主修总绩点：</span><span>data[13]</span><br /><span style=" font-size:10pt; font-weight:600; color:#000000;">主修平均绩点:</span><span>data[14]，</span><span style=" font-size:10pt; font-weight:600; color:#000000;">主修百分制平均分:</span><span>data[15]</span><br /></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:10pt; font-weight:600; color:#ff1b1b;">(备注:如果没有选择年份和学期,则对应区域显示的是目前为止所有课的学分绩点等)</span></p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"></p></body></html>'
+            for i in range(16):
+                html_str = html_str.replace(f"data[{i}]", f"{data[i] : .2f}")
+            html_str = html_str.replace('year', year if year != '' else '所有课程')
+            html_str = html_str.replace('semester', semester if semester != '' else '所有课程')
+        except:
+            html_str = '<div style="font-size:15pt; color:red;">该对应学期或学年无课程数据</div>'
         self.AnalyseRes.setHtml(html_str)
 
     # 爬虫子线程函数

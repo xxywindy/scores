@@ -1,4 +1,3 @@
 requests
-pymysql
-sqlite3
-json
+PyQt-Fluent-Widgets
+PyQt5
