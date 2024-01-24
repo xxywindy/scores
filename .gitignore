@@ -1,0 +1,5 @@
+database.json
+counter.txt
+scores.db
+*.pyc
+__pycache__

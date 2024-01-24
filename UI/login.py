@@ -90,11 +90,11 @@ class zjuerLogin(QMainWindow):
         self.loginbtn.setShortcut(QtCore.Qt.Key_Return)
 
     def autologin(self):
-        with open('database.json', 'r', encoding="utf-8") as f:
-            try:
+        try:
+            with open('database.json', 'r', encoding="utf-8") as f:
                 userdata = json.load(f)
-            except:
-                return False
+        except:
+            return False
         if userdata.get('username') and userdata.get('password'):
             self.usernameEdit.setText(userdata.get('username'))
             self.passwordEdit.setText(userdata.get('password'))
