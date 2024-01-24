@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QPushButton, QLabel, QComboBox, QRadioButton, QLineEdit, QMessageBox
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QMessageBox
+from qfluentwidgets import LineEdit, PushButton, ComboBox, RadioButton, CaptionLabel
 from service.service import *
 from math import ceil
 
@@ -18,7 +19,7 @@ class MyQueryTable(QWidget):
         self.VResLayout = QVBoxLayout(self)
 
         self.HQueryLayout = QHBoxLayout()
-        self.YearComboBox = QComboBox()
+        self.YearComboBox = ComboBox()
         self.YearComboBox.addItem("")
         self.YearComboBox.setItemText(0,"全部")
         self.YearComboBox.addItem("")
@@ -29,16 +30,17 @@ class MyQueryTable(QWidget):
         self.YearComboBox.setItemText(3,"2024-2025")
         self.YearComboBox.addItem("")
         self.YearComboBox.setItemText(4,"2025-2026")
-        self.SemesterComboBox = QComboBox()
+        self.SemesterComboBox = ComboBox()
         self.SemesterComboBox.addItem("")
         self.SemesterComboBox.setItemText(0,"全部")
         self.SemesterComboBox.addItem("")
         self.SemesterComboBox.setItemText(1,"春、夏")
         self.SemesterComboBox.addItem("")
         self.SemesterComboBox.setItemText(2,"秋、冬")
-        self.MajorButton = QRadioButton()
+        self.MajorButton = RadioButton()
         self.MajorButton.setText('只看主修')
-        self.QueryButton = QPushButton()
+        self.MajorButton.setStyleSheet("padding: 5px;")
+        self.QueryButton = PushButton()
         self.QueryButton.setText('查询')
         self.HQueryLayout.addWidget(self.YearComboBox)
         self.HQueryLayout.addWidget(self.SemesterComboBox)
@@ -68,16 +70,20 @@ class MyQueryTable(QWidget):
     def setPageController(self, page):          # 总页数为page
         """自定义页码控制器"""
         control_layout = QHBoxLayout()
-        homePage = QPushButton("首页")
-        prePage = QPushButton("<上一页")
-        self.curPage = QLabel("1")
-        nextPage = QPushButton("下一页>")
-        finalPage = QPushButton("尾页")
-        self.totalPage = QLabel("共" + str(page) + "页")
-        skipLable_0 = QLabel("跳到")
-        self.skipPage = QLineEdit()
-        skipLabel_1 = QLabel("页")
-        confirmSkip = QPushButton("确定")
+        homePage = PushButton("首页")
+        prePage = PushButton("<上一页")
+        self.curPage = CaptionLabel("1")
+        self.curPage.setStyleSheet("padding-left: 2px; padding-right: 2px;")
+        nextPage = PushButton("下一页>")
+        finalPage = PushButton("尾页")
+        self.totalPage = CaptionLabel("共" + str(page) + "页")
+        self.totalPage.setStyleSheet("padding-left: 5px; padding-right: 5px;")
+        skipLable_0 = CaptionLabel("跳到")
+        skipLable_0.setStyleSheet("padding-left: 2px; padding-right: 2px;")
+        self.skipPage = LineEdit()
+        skipLabel_1 = CaptionLabel("页")
+        skipLabel_1.setStyleSheet("padding-left: 2px; padding-right: 2px;")
+        confirmSkip = PushButton("确定")
         homePage.clicked.connect(self.__home_page)
         prePage.clicked.connect(self.__pre_page)
         nextPage.clicked.connect(self.__next_page)

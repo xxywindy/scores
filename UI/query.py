@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QWidget, QListView, QHBoxLayout, QVBoxLayout, QPushButton, QTextBrowser, QFrame
+from PyQt5.QtWidgets import QMainWindow, QWidget, QListView, QHBoxLayout, QVBoxLayout, QTextBrowser, QFrame
+from qfluentwidgets import PushButton
 from PyQt5.QtGui import QIcon, QPalette
 from UI.QueryTable import *
 from service.service import *
@@ -16,9 +17,7 @@ class zjuerQuery(QMainWindow):
     def _init_Ui(self):
         self.setWindowTitle('zjuer自动成绩查询')
         self.centerwidget = QWidget(self)
-        # self.setWindowIcon(QIcon(''))                 # 图标地址
         palette = QPalette()
-        # palette.setBrush(QPalette.Background, QBrush(QPixmap()))              # 图标地址
         self.setPalette(palette)
         self.setCentralWidget(self.centerwidget)
 
@@ -38,10 +37,8 @@ class zjuerQuery(QMainWindow):
         # 结果分析区
         self.VAnalyseZone = QVBoxLayout()
         self.ButtonLayout = QHBoxLayout()
-        self.AnalyseButton = QPushButton()
+        self.AnalyseButton = PushButton()
         self.AnalyseButton.setText('结果分析')
-        self.AnalyseButton.setStyleSheet("QPushButton{background:#989898;border-radius:5px;}QPushButton:hover{background:#616060;}\
-                                    QPushButton{font-family:'Arial';color:#FFFFFF;}")
         self.ButtonLayout.addWidget(self.AnalyseButton)
         self.ButtonLayout.addStretch()
         self.AnalyseRes = QTextBrowser()
@@ -59,15 +56,11 @@ class zjuerQuery(QMainWindow):
         # 爬虫工作区
         self.VCrawlerLayout = QVBoxLayout()
         self.HButtonLayout = QHBoxLayout()
-        self.WorkButton = QPushButton()
+        self.WorkButton = PushButton()
         self.WorkButton.setText('开始爬取')
-        self.WorkButton.setStyleSheet("QPushButton{background:#989898;border-radius:5px;}QPushButton:hover{background:#616060;}\
-                                    QPushButton{font-family:'Arial';color:#FFFFFF;}")
         self.HButtonLayout.addWidget(self.WorkButton)
-        self.FinishButton = QPushButton()
+        self.FinishButton = PushButton()
         self.FinishButton.setText('停止爬取')
-        self.FinishButton.setStyleSheet("QPushButton{background:#989898;border-radius:5px;}QPushButton:hover{background:#616060;}\
-                                    QPushButton{font-family:'Arial';color:#FFFFFF;}")
         self.HButtonLayout.addWidget(self.FinishButton)
         self.WorkText = QTextBrowser()
         self.VCrawlerLayout.addLayout(self.HButtonLayout)

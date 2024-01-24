@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QWidget, QLineEdit, QListView, QVBoxLayout,  QFrame, QGraphicsOpacityEffect, QPushButton 
+from PyQt5.QtWidgets import QMainWindow, QWidget, QListView, QVBoxLayout, QFrame
+from qfluentwidgets import LineEdit, PushButton, PasswordLineEdit
 from PyQt5.QtGui import QIcon, QPalette
 from PyQt5.QtCore import QRect
 import json
@@ -17,9 +18,7 @@ class zjuerLogin(QMainWindow):
     def _init_Ui(self):
         self.setWindowTitle('zjuer自动成绩查询')
         self.centerwidget = QWidget(self)
-        # self.setWindowIcon(QIcon(''))                 # 图标地址
         palette = QPalette()
-        # palette.setBrush(QPalette.Background, QBrush(QPixmap()))              # 图标地址
         self.setPalette(palette)
         self.setCentralWidget(self.centerwidget)
 
@@ -29,46 +28,32 @@ class zjuerLogin(QMainWindow):
         self.listView.setObjectName("listView")
 
         self.frame = QFrame(self.centerwidget)
-        self.frame.setGeometry(460,280,360,480)
+        self.frame.setGeometry(390,280,500,480)
         self.frame.setStyleSheet("""  QFrame {  
-        border-radius: 20px;  /* 设置圆角 */  
-        background-color: rgba(128, 128, 128, 100);  /* 设置灰色半透明背景 */  }  """)  
+            border-radius: 20px;  /* 设置圆角 */  
+            background-color: rgba(128, 128, 128, 0.4);  /* 设置灰色半透明背景 */ 
+            padding-top: 30px;
+            padding-left: 80px;
+            padding-bottom: 30px;
+            padding-right: 80px;
+            margin-bottom: 80px
+        }""")  
         self.mainLayout = QVBoxLayout(self.frame)
 
         # 设置透明度
-        op1 = QGraphicsOpacityEffect()
-        op1.setOpacity(0.6)
-        op2 = QGraphicsOpacityEffect()
-        op2.setOpacity(0.6)
-        op3 = QGraphicsOpacityEffect()
-        op3.setOpacity(0.6)
-        op4 = QGraphicsOpacityEffect()
-        op4.setOpacity(0.8)
-        op5 = QGraphicsOpacityEffect()
-        op5.setOpacity(0.8)
 
-        self.usernameEdit = QLineEdit(self)
+        self.usernameEdit = LineEdit(self)
         self.usernameEdit.setPlaceholderText('请输入您的学号')
-        self.usernameEdit.setGraphicsEffect(op1)
-        self.usernameEdit.setStyleSheet("QLineEdit{border-radius:5px;}")
-        self.passwordEdit = QLineEdit(self)
+        self.usernameEdit.setStyleSheet("LineEdit{border-radius:5px;}")
+        self.passwordEdit = PasswordLineEdit(self)
         self.passwordEdit.setPlaceholderText('请输入您的密码')
-        self.passwordEdit.setGraphicsEffect(op2)
-        self.passwordEdit.setStyleSheet("QLineEdit{border-radius:5px;}")
-        self.passwordEdit.setEchoMode(QtWidgets.QLineEdit.Password)
-        self.urlEdit = QLineEdit(self)
+        self.passwordEdit.setStyleSheet("LineEdit{border-radius:5px;}")
+        self.urlEdit = LineEdit(self)
         self.urlEdit.setPlaceholderText('请输入您的钉钉机器人的url(选填)')
-        self.urlEdit.setGraphicsEffect(op3)
-        self.urlEdit.setStyleSheet("QLineEdit{border-radius:5px;}")
+        self.urlEdit.setStyleSheet("LineEdit{border-radius:5px;}")
 
-        self.loginbtn = QPushButton('登录')
-        self.loginbtn.setGraphicsEffect(op4)
-        self.loginbtn.setStyleSheet("QPushButton{background:#1E90FF;border-radius:5px;}QPushButton:hover{background:#4169E1;}\
-                                    QPushButton{font-family:'Arial';color:#FFFFFF;}")
-        self.cancelbtn = QPushButton('退出')
-        self.cancelbtn.setGraphicsEffect(op5)
-        self.cancelbtn.setStyleSheet("QPushButton{background:#1E90FF;border-radius:5px;}QPushButton:hover{background:#4169E1;}\
-                                    QPushButton{font-family:'Arial';color:#FFFFFF;}")
+        self.loginbtn = PushButton('登录')
+        self.cancelbtn = PushButton('退出')
         
         self.mainLayout.addWidget(self.usernameEdit)
         self.mainLayout.addWidget(self.passwordEdit)
