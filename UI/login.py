@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QMainWindow, QWidget, QLineEdit, QListView, QVBoxLay
 from PyQt5.QtGui import QIcon, QPalette
 from PyQt5.QtCore import QRect
 import json
-from query import *
+from UI.query import *
 from service.service import *
 
 class zjuerLogin(QMainWindow):
@@ -25,7 +25,7 @@ class zjuerLogin(QMainWindow):
 
         self.listView = QListView(self.centerwidget)
         self.listView.setGeometry(QtCore.QRect(-5, 1, 1281, 771))
-        self.listView.setStyleSheet("border-image: url(C:/Comp.Sci/scores/images/background.png);")
+        self.listView.setStyleSheet("border-image: url(./images/background.png);")
         self.listView.setObjectName("listView")
 
         self.frame = QFrame(self.centerwidget)

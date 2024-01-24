@@ -24,7 +24,7 @@ class zjuerQuery(QMainWindow):
 
         self.listView = QListView(self.centerwidget)
         self.listView.setGeometry(QtCore.QRect(-5, 1, 1281, 771))
-        self.listView.setStyleSheet("border-image: url(C:/Comp.Sci/scores/images/background.png); opacity:0.6;")
+        self.listView.setStyleSheet("border-image: url(./images/background.png); opacity:0.6;")
         self.listView.setObjectName("listView")
 
         # 分析区和结果区建立垂直布局放在左边,爬虫工作区放右边
